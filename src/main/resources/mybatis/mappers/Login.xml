@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="jung.gyu.user.dao.LoginDAO">
+
+    <select id="findUser" resultType="LoginVO">
+        SELECT *
+        FROM BOB_USER
+        WHERE U_ID = #{uId} AND U_PWD = #{uPwd}
+    </select>
+
+</mapper>

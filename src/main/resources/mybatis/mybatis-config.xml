@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <settings>
+        <setting name="mapUnderscoreToCamelCase" value="true"/> <!-- 언더스코어를 카멜 케이스로 매핑 -->
+        <setting name="jdbcTypeForNull" value="NULL"/> <!-- NULL 값을 처리하기 위한 기본 설정 -->
+    </settings>
+</configuration>

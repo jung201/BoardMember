@@ -1,0 +1,65 @@
+plugins {
+	id 'java' // Java 프로젝트로 설정
+	id 'war' // WAR(Web Application Archive) 패키징을 위한 플러그인
+	id 'org.springframework.boot' version '3.4.2' // Spring Boot 플러그인 추가, 버전은 3.4.2 사용
+	id 'io.spring.dependency-management' version '1.1.7' // Spring 의존성 관리를 위한 플러그인
+}
+
+group = 'jung' // 프로젝트 그룹명 설정 (패키지 이름처럼 관리)
+version = '0.0.1-SNAPSHOT' // 프로젝트 버전 설정 (SNAPSHOT은 개발 중인 버전을 나타냄)
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(17) // Java 17을 사용하도록 설정
+	}
+}
+
+configurations {
+	compileOnly {
+		extendsFrom annotationProcessor // annotationProcessor 설정 확장 (Lombok 같은 애노테이션 사용 지원)
+	}
+}
+
+repositories {
+	mavenCentral() // Maven 중앙 저장소에서 라이브러리 의존성을 가져오도록 설정
+}
+
+dependencies {
+	// Spring Boot 기본 웹 애플리케이션 의존성
+	implementation 'org.springframework.boot:spring-boot-starter-web'
+
+	// MyBatis와 Spring Boot 연동을 위한 의존성
+	implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:3.0.4'
+
+	// Lombok: Getter/Setter 자동 생성 도구, 컴파일 타임에 적용되므로 compileOnly로 설정
+	compileOnly 'org.projectlombok:lombok'
+	annotationProcessor 'org.projectlombok:lombok'
+
+	// Oracle 데이터베이스 연동을 위한 JDBC 드라이버
+	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+
+	// Spring Boot 내장 톰캣 대신 외부 톰캣 서버에서 실행하기 위해 providedRuntime으로 설정
+	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
+
+	// JSP 파일을 처리하기 위한 Apache Tomcat Jasper 엔진 의존성
+	implementation 'org.apache.tomcat.embed:tomcat-embed-jasper'
+
+	// JSTL(JSP Standard Tag Library) API 및 구현체
+	implementation 'jakarta.servlet.jsp.jstl:jakarta.servlet.jsp.jstl-api'
+	implementation 'org.glassfish.web:jakarta.servlet.jsp.jstl'
+
+	// 테스트 환경을 위한 Spring Boot Starter Test 의존성 추가
+	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+	// MyBatis 테스트를 지원하기 위한 의존성 추가
+	testImplementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter-test:3.0.4'
+
+	// JUnit 테스트 실행기 (testRuntimeOnly로 설정하여 런타임에서만 사용)
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+
+}
+
+tasks.named('test') {
+	useJUnitPlatform() // JUnit 5 (JUnit Platform)를 사용하도록 설정
+}
