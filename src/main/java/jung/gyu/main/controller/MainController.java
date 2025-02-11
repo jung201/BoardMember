@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/main")
 public class MainController {
 
-    @GetMapping("")
+    @GetMapping
     public String showMainPage(HttpSession session, Model model) {
         LoginVO loggedInUser = (LoginVO) session.getAttribute("loggedInUser");
 

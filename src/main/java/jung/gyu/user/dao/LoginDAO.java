@@ -6,8 +6,5 @@ import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface LoginDAO {
-    LoginVO findUser(
-            @Param("uId") String uId,
-            @Param("uPwd") String uPwd
-            );
+    LoginVO findUser ( @Param("uId") String uId, @Param("uPwd") String uPwd );
 }

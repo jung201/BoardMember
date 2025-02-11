@@ -35,8 +35,8 @@ dependencies {
 	compileOnly 'org.projectlombok:lombok'
 	annotationProcessor 'org.projectlombok:lombok'
 
-	// Oracle 데이터베이스 연동을 위한 JDBC 드라이버
-	runtimeOnly 'com.oracle.database.jdbc:ojdbc11'
+	// MySQL 데이터베이스 연동을 위한 JDBC 드라이버
+	runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
 	// Spring Boot 내장 톰캣 대신 외부 톰캣 서버에서 실행하기 위해 providedRuntime으로 설정
 	providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'

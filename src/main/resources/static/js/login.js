@@ -1,37 +1,35 @@
-document.addEventListener("DOMContentLoaded", function() {
-    // 로그인 폼 가져오기
-    const loginForm = document.querySelector("#loginForm");
+document.getElementById("loginForm").addEventListener("submit", function(event){
+    event.preventDefault(); // 기본 폼 제출 방지
 
-    loginForm.addEventListener("submit", function(event) {
-    event.preventDefault(); // 기본 제출 동작 방지
+    const uId = document.getElementById("uId").value;
+    const uPwd = document.getElementById("uPwd").value;
 
-    // 입력한 아이디, 비밀번호 가져오기
-    const uId = document.querySelector("#uId").value.trim();
-    const uPwd = document.querySelector("#uPwd").value.trim();
+    console.log("uId : " + uId);
+    console.log("uPwd : " + uPwd);
 
-    console.log("입력된 ID:", uId);
-    console.log("입력된 PWD:", uPwd);
-    console.log("보낼 데이터:", JSON.stringify({ uId, uPwd })); // 확인용 로그
-
-    // 서버 로그인 요청 보내기
-
+    // REST API 요청 (fetch 사용)
     fetch("/api/user/login", {
         method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({ "uId": uId, "uPwd": uPwd })
+        headers:{
+            "Content-Type" : "application/x-www-form-urlencoded",
+        },
+        body: new URLSearchParams({ uId, uPwd }) // 데이터 변환
     })
-    .then(response => response.json()) // json 응답 변환
-    .then(data => {
-        if(data.success) {
-            alert("로그인 성공!");
-            window.location.href = contextPath + "/main/main";
-        } else {
-            alert("아이디 또는 비밀번호가 일치하지 않습니다 !");
+    .then(response => {
+        if (!response.ok) {
+            throw new Error("로그인 실패 ! 아이디 또는 비밀번호를 확인해 주세요 !! ");
         }
+        return response.json();
+    })
+    .then(data => {
+        console.log("로그인 응답 데이터:", data); // 콘솔에서 데이터 확인
+
+        if (data.uNickname) {
+            alert(`로그인 성공! ${data.uNickname}님 환영합니다!`);
+        }
+        window.location.href = "/main";
     })
     .catch(error => {
-            console.error("로그인 요청 오류", error);
-            alert("서버 오류가 발생했습니다. 다시 시도해 주세요 !");
-        });
+        alert(error.message);
     });
 });
