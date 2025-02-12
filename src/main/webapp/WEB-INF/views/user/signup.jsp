@@ -17,13 +17,13 @@
 
 <div class="signupContainer">
     <div class="signupBox">
-        <form action="/user/signup" method="post">
+        <form id="signupForm">
             <div class="signupTitle">회원가입</div>
-            <input type="text" id="uId" name="uId" placeholder="아이디를 입력하세요" required><br>
-            <input type="password" id="uPwd" name="uPwd" placeholder="비밀번호를 입력하세요" required><br>
+            <input type="text" id="uId" name="uId" placeholder="아이디를 입력하세요" autocomplete="current-id" required><br>
+            <input type="password" id="uPwd" name="uPwd" placeholder="비밀번호를 입력하세요" autocomplete="current-password" required><br>
             <input type="email" id="uEmail" name="uEmail" placeholder="이메일을 입력하세요"required><br>
             <input type="text" id="uNickname" name="uNickname" placeholder="닉네임을 입력하세요"required><br>
-            <button class="signupBtn" type="submit">회원가입</button>
+            <button class="signupBtn" type="button">회원가입</button>
 
             <!-- 로그인 페이지 이동 버튼 -->
             <div class="signupLoginBtn" onclick="location.href='${contextPath}/user/login'">이미 아이디가 있으신가요?</div>

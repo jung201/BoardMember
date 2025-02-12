@@ -4,7 +4,7 @@
 <mapper namespace="jung.gyu.user.dao.LoginDAO">
     <select id="findUser" resultType="LoginVO">
         SELECT *
-        FROM BOB_USER
+        FROM P_USER
         WHERE uId = #{uId} AND uPwd = #{uPwd}
     </select>
 </mapper>

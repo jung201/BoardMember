@@ -3,7 +3,7 @@
 
 <mapper namespace="jung.gyu.user.dao.SignupDAO">
     <insert id="insertUser" parameterType="SignupVO">
-        INSERT INTO BOB_USER (
+        INSERT INTO P_USER (
         uId,
         uPwd,
         uEmail,

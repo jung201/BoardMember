@@ -17,15 +17,15 @@ document.getElementById("loginForm").addEventListener("submit", function(event){
     })
     .then(response => {
         if (!response.ok) {
-            throw new Error("로그인 실패 ! 아이디 또는 비밀번호를 확인해 주세요 !! ");
+            throw new Error("🚨로그인 실패 ! 아이디 또는 비밀번호를 확인해 주세요 !! ");
         }
         return response.json();
     })
     .then(data => {
-        console.log("로그인 응답 데이터:", data); // 콘솔에서 데이터 확인
+        console.log("✅로그인 응답 데이터:", data); // 콘솔에서 데이터 확인
 
         if (data.uNickname) {
-            alert(`로그인 성공! ${data.uNickname}님 환영합니다!`);
+            alert(`${data.uNickname}님 환영합니다!`);
         }
         window.location.href = "/main";
     })

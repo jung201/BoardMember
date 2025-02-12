@@ -19,8 +19,8 @@
     <div class="loginBox">
         <form id="loginForm">
             <div class="loginTitle">로그인</div>
-            <input type="text" id="uId" name="uId" placeholder="아이디를 입력하세요" required>
-            <input type="password" id="uPwd" name="uPwd" placeholder="비밀번호를 입력하세요"autocomplete="current-password" required>
+            <input type="text" id="uId" name="uId" placeholder="아이디를 입력하세요" autocomplete="current-id" required>
+            <input type="password" id="uPwd" name="uPwd" placeholder="비밀번호를 입력하세요" autocomplete="current-password" required>
             <button class="loginBtn" type="submit">로그인</button>
 
             <!-- 회원가입 페이지 이동 버튼 -->

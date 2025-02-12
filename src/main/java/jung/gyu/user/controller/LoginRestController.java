@@ -17,19 +17,20 @@ public class LoginRestController {
     @Autowired
     private LoginService loginService;
 
+    // 1. 로그인 처리
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestParam String uId, @RequestParam String uPwd, HttpSession session) {
         LoginVO user = loginService.authenticate(uId, uPwd);
 
         if ( user != null ) {
             System.out.println();
-            System.out.println("로그인 성공 ID : " + user );
+            System.out.println("✅로그인 성공 : " + user );
             System.out.println();
 
             session.setAttribute("loggedInUser", user);
             return ResponseEntity.ok(user); // 성공 시 유저 정보 반환
         } else {
-            return ResponseEntity.status(401).body("로그인 실패 : 아이디 또는 비밀번호가 일치하지 않습니다 !!");
+            return ResponseEntity.status(401).body("로그인 실패 : 아이디 또는 비밀번호가 일치하지 않습니다");
         }
     }
 }
