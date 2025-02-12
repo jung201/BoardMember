@@ -9,4 +9,7 @@ public interface SignupDAO {
 
     // 1. 사용자 정보입력
     void insertUser(SignupVO signupVO);
+
+    // 2. 이메일 중복체크
+    int checkEmailExists(String uEmail);
 }

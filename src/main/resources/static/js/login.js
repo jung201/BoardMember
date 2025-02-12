@@ -33,3 +33,24 @@ document.getElementById("loginForm").addEventListener("submit", function(event){
         alert(error.message);
     });
 });
+
+// ✅ 엔터 키 입력 시 로그인 버튼 클릭 이벤트 실행
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Enter") {
+        event.preventDefault(); // 기본 엔터 키 폼 제출 방지
+
+        let uId = document.querySelector("#uId").value.trim();
+        let uPwd = document.querySelector("#uPwd").value.trim();
+
+        if (uId === '') {
+            alert("🚨 아이디를 입력해주세요 !");
+            return;
+        }
+
+        if (uPwd === '') {
+            alert("🚨 비밀번호를 입력해주세요 !");
+            return;
+        }
+        document.querySelector(".loginBtn").click(); // 로그인 버튼 클릭 이벤트 실행
+    }
+});

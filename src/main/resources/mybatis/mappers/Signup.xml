@@ -24,4 +24,8 @@
         NULL
         )
     </insert>
+
+    <select id="checkEmailExists" resultType="int">
+        SELECT COUNT(*) FROM P_USER WHERE uEmail = #{email}
+    </select>
 </mapper>

@@ -11,7 +11,14 @@ public class SignupService {
     @Autowired
     SignupDAO signupDAO;
 
+    // 회원가입 메서드
     public void registerUser(SignupVO signupVO) {
         signupDAO.insertUser(signupVO);
+    }
+
+    // 이메일 중복확인 메서드
+    public boolean isEmailExists(String email) {
+        int count = signupDAO.checkEmailExists(email);
+        return count > 0;
     }
 }

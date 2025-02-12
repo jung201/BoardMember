@@ -4,10 +4,9 @@ import jung.gyu.user.service.SignupService;
 import jung.gyu.user.vo.SignupVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import java.util.Collections;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/user")
@@ -16,11 +15,20 @@ public class SignupRestController {
     @Autowired
     SignupService signupService;
 
-    // 1. 회원가입 처리
+    // 1. 이메일 중복 확인 API
+    @GetMapping("/check-email")
+    public ResponseEntity<Map<String, Boolean>> checkEmailExists(@RequestParam String email) {
+        boolean exists = signupService.isEmailExists(email);
+        return ResponseEntity.ok(Collections.singletonMap("exists", exists));
+    }
+
+    // ===================================================================================================
+
+    // 2. 회원가입 처리
     @PostMapping("/signup")
     public ResponseEntity<?> registerUser(@RequestBody SignupVO signupVO) {
         if (signupVO == null) {
-            return ResponseEntity.badRequest().body("잘못된 요청입니다. 데이터가 전달되지 않았어요!");
+            return ResponseEntity.badRequest().body("🚨 잘못된 요청입니다. 데이터가 전달되지 않았어요!");
         }
 
         // ✅유효성 검사 실행
@@ -29,17 +37,27 @@ public class SignupRestController {
             return ResponseEntity.badRequest().body(validationMessage);
         }
 
-        System.out.println("✅회원가입 요청 데이터: " + signupVO);
+        // 🚨 이메일 중복 체크
+        boolean emailExists = signupService.isEmailExists(signupVO.getUEmail());
+        System.out.println("\n✅이메일 중복 여부 체크: " + emailExists + "\n");
+
+        if (emailExists) {
+            System.out.println("\n🚨 이미 존재하는 이메일입니다!" + "\n");
+            return ResponseEntity.badRequest().body("🚨 이미 존재하는 이메일입니다!");
+        }
+
+    // ===================================================================================================
+
+        System.out.println("\n✅회원가입 요청 데이터: " + signupVO + "\n");
 
         // ✅회원가입 진행
         signupService.registerUser(signupVO);
-
-        System.out.println();
-        System.out.println("✅회원가입 성공 : " + signupVO);
-        System.out.println();
+        System.out.println("\n✅회원가입 성공 : " + signupVO +"\n");
 
         return ResponseEntity.ok(signupVO);
     }
+
+    // ===================================================================================================
 
     // ✅유효성 검사 메서드
     private String validateSignup(SignupVO signupVO) {

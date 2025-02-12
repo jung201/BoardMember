@@ -24,10 +24,39 @@ document.addEventListener("DOMContentLoaded", function () {
         return nicknameRegex.test(nickname);
     }
 
-    // ✅ 이벤트 리스너 등록
-    document.querySelector(".signupBtn").addEventListener("click", function (event) {
-        event.preventDefault(); // 기본 폼 제출 방지
+    // ✅ 이메일 중복 확인 함수
+    async function checkEmailDuplicate(email) {
+        try {
+            const response = await fetch(`/api/user/check-email?email=${email}`);
+            const data = await response.json();
 
+            if (data.exists) {
+                alert("🚨 이미 사용 중인 이메일입니다! 다른 이메일을 입력해주세요.");
+                return false;
+            }
+            return true;
+        } catch (error) {
+            console.error("🚨 이메일 중복 확인 실패:", error);
+            return false;
+        }
+    }
+
+    // ✅ 회원가입 버튼 클릭 이벤트
+    document.querySelector(".signupBtn").addEventListener("click", async function (event) {
+        event.preventDefault(); // 기본 폼 제출 방지
+        submitSignup(); // 회원가입 실행
+    });
+
+    // ✅ 엔터 키 입력 시 회원가입 버튼 클릭
+    document.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") {
+            event.preventDefault(); // 기본 엔터 키 폼 제출 방지
+            document.querySelector(".signupBtn").click(); // 버튼 클릭 이벤트 실행
+        }
+    });
+
+    // ✅ 회원가입 실행 함수
+    async function submitSignup() {
         let uId = document.getElementById("uId").value.trim();
         let uPwd = document.getElementById("uPwd").value.trim();
         let uEmail = document.getElementById("uEmail").value.trim();
@@ -51,24 +80,28 @@ document.addEventListener("DOMContentLoaded", function () {
             return;
         }
 
+        // ✅ 이메일 중복 확인
+        let isEmailValid = await checkEmailDuplicate(uEmail);
+        if (!isEmailValid) {
+            return;
+        }
+
         // ✅ 유효성 검사를 모두 통과한 경우, fetch 실행
         let signupData = { uId, uPwd, uEmail, uNickname };
-        console.log("✅ 회원가입 데이터 확인:", signupData); // 전송할 데이터 콘솔 확인
+        console.log("✅ 회원가입 데이터 확인:", signupData);
 
-        fetch("/api/user/signup", { // REST API URL
+        // ✅ 회원가입 요청
+        fetch("/api/user/signup", {
             method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(signupData)
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(signupData),
         })
-        .then(response => response.json()) // 서버 응답을 JSON으로 변환
-        .then(data => { // JSON 데이터에서 uNickname 추출
-            console.log("✅ 회원가입 응답 데이터:", data); // 응답 확인
-
-            alert(`✅ 회원가입 성공! ${data.uNickname}님!`); // 닉네임을 alert으로 표시
-            window.location.href = "/user/login"; // 로그인 페이지로 이동
-        })
-        .catch(error => console.error("🚨 회원가입 실패:", error));
-    });
+            .then(response => response.json())
+            .then(data => {
+                console.log("✅ 회원가입 응답 데이터:", data);
+                alert(`✅ 회원가입 성공! ${data.uNickname}님!`);
+                window.location.href = "/user/login";
+            })
+            .catch(error => console.error("🚨 회원가입 실패:", error));
+    }
 });
