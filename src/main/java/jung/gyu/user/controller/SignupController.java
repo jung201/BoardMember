@@ -15,7 +15,7 @@ public class SignupController {
 
     @GetMapping("/signup")
     public String showSignuppage() {
-        System.out.println("---signup---");
+        System.out.println("\n---signup---\n");
         return "user/signup";
     }
 }

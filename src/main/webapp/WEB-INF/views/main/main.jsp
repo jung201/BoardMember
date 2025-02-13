@@ -16,6 +16,7 @@
 <html>
 <body>
     <h1>환영합니다 ! ${uNickname}님 !</h1>
+    <a href="${contextPath}/board" class="btn">게시판 이동</a>
 </body>
 
 </html>

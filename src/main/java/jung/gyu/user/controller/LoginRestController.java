@@ -23,10 +23,7 @@ public class LoginRestController {
         LoginVO user = loginService.authenticate(uId, uPwd);
 
         if ( user != null ) {
-            System.out.println();
-            System.out.println("✅로그인 성공 : " + user );
-            System.out.println();
-
+            System.out.println("\n✅로그인 성공 : " + user +"\n");
             session.setAttribute("loggedInUser", user);
             return ResponseEntity.ok(user); // 성공 시 유저 정보 반환
         } else {

@@ -16,7 +16,7 @@ public class LoginController {
     // 로그인 페이지 GET 요청 처리
     @GetMapping("/login")
     public String showLoginPage() {
-        System.out.println("---login---");
+        System.out.println("\n---login---\n");
         return "user/login"; // login.jsp 파일 반환
     }
 }

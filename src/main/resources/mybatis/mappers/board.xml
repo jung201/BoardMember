@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="jung.gyu.board.dao.BoardDAO">
+
+    <!-- 1. 전체 게시물 조회 -->
+    <select id="getAllBoard" resultType="jung.gyu.board.vo.BoardVO">
+    SELECT
+        bNo,
+        CASE
+            WHEN bCategory = 'N' THEN '공지사항'
+            WHEN bCategory = 'F' THEN '자유이야기'
+            WHEN bCategory = 'Q' THEN 'QnA'
+        ELSE '알 수 없음'
+        END AS bCategory,
+        bTitle,
+        bContent,
+        bCreatedId,
+        bCreatedDate,
+        bUpdateDate,
+        bViews
+        FROM P_BOARD P
+        ORDER BY bNo DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 2. 카테고리별 게시글 조회 -->
+    <select id="getBoardByCategory" resultType="jung.gyu.board.vo.BoardVO">
+        SELECT
+        bNo,
+        CASE
+        WHEN bCategory = 'N' THEN '공지사항'
+        WHEN bCategory = 'F' THEN '자유이야기'
+        WHEN bCategory = 'Q' THEN 'QnA'
+        ELSE '알 수 없음'
+        END AS bCategory,
+        bTitle,
+        bContent,
+        bCreatedId,
+        bCreatedDate,
+        bUpdateDate,
+        bViews
+        FROM P_BOARD P
+        WHERE bCategory = #{category}
+        ORDER BY bNo DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 3. 전체 게시글 개수 조회 -->
+    <select id="getTotalBoardCount" resultType="int">
+        SELECT COUNT(*) FROM P_BOARD
+    </select>
+
+    <!-- 4. 카테고리별 게시글 개수 조회 -->
+    <select id="getCategoryBoardCount" resultType="int">
+        SELECT COUNT(*) FROM P_BOARD WHERE bCategory = #{category}
+    </select>
+
+</mapper>
