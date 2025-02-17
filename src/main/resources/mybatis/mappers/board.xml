@@ -3,44 +3,35 @@
 
 <mapper namespace="jung.gyu.board.dao.BoardDAO">
 
+    <!-- 공통 SQL (게시글 조회 기본 로직) -->
+    <sql id="BaseSelectQuery">
+        SELECT
+            bNo,
+            CASE
+                WHEN bCategory = 'N' THEN '공지사항'
+                WHEN bCategory = 'F' THEN '자유이야기'
+                WHEN bCategory = 'Q' THEN 'QnA'
+            ELSE '알 수 없음'
+            END AS bCategory,
+            bTitle,
+            bContent,
+            bCreatedId,
+            bCreatedDate,
+            bUpdateDate,
+            bViews
+        FROM P_BOARD P
+    </sql>
+
     <!-- 1. 전체 게시물 조회 -->
     <select id="getAllBoard" resultType="jung.gyu.board.vo.BoardVO">
-    SELECT
-        bNo,
-        CASE
-            WHEN bCategory = 'N' THEN '공지사항'
-            WHEN bCategory = 'F' THEN '자유이야기'
-            WHEN bCategory = 'Q' THEN 'QnA'
-        ELSE '알 수 없음'
-        END AS bCategory,
-        bTitle,
-        bContent,
-        bCreatedId,
-        bCreatedDate,
-        bUpdateDate,
-        bViews
-        FROM P_BOARD P
+        <include refid="BaseSelectQuery"/>
         ORDER BY bNo DESC
         LIMIT #{offset}, #{limit}
     </select>
 
     <!-- 2. 카테고리별 게시글 조회 -->
     <select id="getBoardByCategory" resultType="jung.gyu.board.vo.BoardVO">
-        SELECT
-        bNo,
-        CASE
-        WHEN bCategory = 'N' THEN '공지사항'
-        WHEN bCategory = 'F' THEN '자유이야기'
-        WHEN bCategory = 'Q' THEN 'QnA'
-        ELSE '알 수 없음'
-        END AS bCategory,
-        bTitle,
-        bContent,
-        bCreatedId,
-        bCreatedDate,
-        bUpdateDate,
-        bViews
-        FROM P_BOARD P
+        <include refid="BaseSelectQuery"/>
         WHERE bCategory = #{category}
         ORDER BY bNo DESC
         LIMIT #{offset}, #{limit}
@@ -55,5 +46,62 @@
     <select id="getCategoryBoardCount" resultType="int">
         SELECT COUNT(*) FROM P_BOARD WHERE bCategory = #{category}
     </select>
+
+    <!-- 5. 검색된 게시글 개수 조회 -->
+    <select id="getSearchBoardCount" parameterType="map" resultType="int">
+        SELECT COUNT(*) FROM P_BOARD
+        WHERE
+        <choose>
+            <when test="searchType eq 'title'">
+                bTitle LIKE #{keyword}
+            </when>
+            <when test="searchType eq 'writer'">
+                bCreatedId LIKE #{keyword}
+            </when>
+            <otherwise>
+                (bTitle LIKE #{keyword} OR bCreatedId LIKE #{keyword})
+            </otherwise>
+        </choose>
+    </select>
+
+    <!-- 6. 검색된 게시글 목록 조회 -->
+    <select id="searchBoard" parameterType="map" resultType="jung.gyu.board.vo.BoardVO">
+        <include refid="BaseSelectQuery"/>
+        WHERE
+        <choose>
+            <when test="searchType eq 'title'">
+                bTitle LIKE #{keyword}
+            </when>
+            <when test="searchType eq 'writer'">
+                bCreatedId LIKE #{keyword}
+            </when>
+            <otherwise>
+                (bTitle LIKE #{keyword} OR bCreatedId LIKE #{keyword})
+            </otherwise>
+        </choose>
+        ORDER BY bNo DESC
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 7. 글쓰기 -->
+    <insert id="insertPost" parameterType="jung.gyu.board.vo.BoardVO">
+        INSERT INTO P_BOARD (
+            bCategory,
+            bTitle,
+            bContent,
+            bCreatedId,
+            bCreatedDate,
+            bViews
+        )
+        VALUES (
+            #{bCategory},
+            #{bTitle},
+            #{bContent},
+            #{bCreatedId},
+            NOW(),
+            0
+        )
+    </insert>
+
 
 </mapper>

@@ -13,7 +13,6 @@
     <link rel="stylesheet" href="${contextPath}/css/main.css"> <!--CSS 경로-->
     <title>메인페이지</title>
 </head>
-<html>
 <body>
     <h1>환영합니다 ! ${uNickname}님 !</h1>
     <a href="${contextPath}/board" class="btn">게시판 이동</a>

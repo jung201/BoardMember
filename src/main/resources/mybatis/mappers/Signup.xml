@@ -4,24 +4,24 @@
 <mapper namespace="jung.gyu.user.dao.SignupDAO">
     <insert id="insertUser" parameterType="SignupVO">
         INSERT INTO P_USER (
-        uId,
-        uPwd,
-        uEmail,
-        uNickname,
-        uPhotoName,
-        uPhotoPath,
-        createdDate,
-        updatedDate
+            uId,
+            uPwd,
+            uEmail,
+            uNickname,
+            uPhotoName,
+            uPhotoPath,
+            createdDate,
+            updatedDate
         )
         VALUES (
-        #{uId},
-        #{uPwd},
-        #{uEmail},
-        #{uNickname},
-        #{uPhotoName, jdbcType=VARCHAR},
-        #{uPhotoPath, jdbcType=VARCHAR},
-        NOW(),
-        NULL
+            #{uId},
+            #{uPwd},
+            #{uEmail},
+            #{uNickname},
+            #{uPhotoName, jdbcType=VARCHAR},
+            #{uPhotoPath, jdbcType=VARCHAR},
+            NOW(),
+            NULL
         )
     </insert>
 

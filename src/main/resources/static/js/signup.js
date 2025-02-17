@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let uEmail = document.getElementById("uEmail").value.trim();
         let uNickname = document.getElementById("uNickname").value.trim();
 
-        // ✅ 유효성 검사 (fetch보다 먼저 실행!)
+        // ✅ 유효성 검사 (fetch보다 먼저 실행)
         if (!validateId(uId)) {
             alert("❌ 아이디는 12자 이내, 문자+숫자로 입력해야 해요! (숫자만 불가)");
             return;

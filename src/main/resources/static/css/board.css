@@ -27,17 +27,102 @@ a {
     color: #007bff;
 }
 
-.btn-container {
-    margin-top: 20px;
-    text-align: right;
+/* 카테고리 필터 버튼 스타일 */
+.category-filter {
+    text-align: center;
+    margin-bottom: 20px;
 }
 
-.btn {
-    display: inline-block;
+.category-filter button {
+    color: black;
+    border: none;
     padding: 8px 12px;
-    background-color: #007bff;
-    color: white;
+    margin: 5px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: 0.3s;
+    background-color: transparent;
+}
+
+/* 버튼 클릭 시 효과 */
+.category-filter button:hover {
+    border-radius: 10px;
+    background-color: #f2f2f2;
+}
+
+/* 네비게이터 */
+.boardNavigator {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 20px;
+    background-color: #f8f9fa;
+    border-radius: 8px;
+    box-shadow: 0px 2px 5px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    height:50px;
+}
+
+/* 검색창 컨테이너 */
+.search-container {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+/* 드롭다운 스타일 */
+.search-container select#searchType {
+    height: 35px; /* 높이 조정 */
+    font-size: 12px; /* 글자 크기 */
+    padding: 10px;
+    width: 100px; /* 적당한 가로 길이 */
+    border: 1px solid #ccc;
     border-radius: 5px;
+    box-sizing: border-box; /* 패딩 포함 크기 유지 */
+}
+
+/* 검색 입력창 스타일 */
+.search-container input#searchKeyword {
+    height: 35px; /* 높이 통일 */
+    font-size: 12px;
+    padding: 10px;
+    width: 250px; /* 입력창 가로 길이 조정 */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+/* 검색 버튼 스타일 */
+#search-btn {
+    height: 35px;
+    width: 50px;
+    font-size: 25px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* 글 작성 버튼 컨테이너 */
+.write-container {
+    margin-left: auto; /* 오른쪽 정렬 */
+}
+
+/* 글 작성 버튼 */
+#write-btn {
+    height: 40px;
+    font-size: 16px;
+    padding: 8px 15px;
+    background-color: #28a745; /* 초록색 */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+#write-btn:hover {
+    background-color: #218838;
 }
 
 
@@ -85,20 +170,4 @@ a {
 }
 
 
-
-/* 카테고리 필터 버튼 스타일 */
-.category-filter {
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.category-filter button {
-    color: black;
-    border: none;
-    padding: 8px 12px;
-    margin: 5px;
-    cursor: pointer;
-    font-size: 20px;
-    transition: 0.3s;
-}
 

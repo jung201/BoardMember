@@ -24,9 +24,22 @@
     <button onclick="loadBoardList(1, 'Q')">QnA</button>
 </div>
 
-<!-- 글 작성 버튼 -->
-<div class="btn-container">
-    <a href="/board/write" class="btn">글 작성</a>
+<!-- 검색창 추가 -->
+<div class="boardNavigator">
+    <div class="search-container">
+        <select id="searchType">
+            <option value="all">구분</option>
+            <option value="title">제목</option>
+            <option value="writer">작성자</option>
+        </select>
+        <input type="text" id="searchKeyword" placeholder="키워드를 입력해 주세요">
+        <button onclick="searchBoard()" id="search-btn">🔍</button>
+    </div>
+
+    <!-- 글 작성 버튼 -->
+    <div class="write-container">
+        <button onclick="location.href='${contextPath}/board/write'" id="write-btn">글 작성</button>
+    </div>
 </div>
 
 <!-- 게시판 테이블 -->
