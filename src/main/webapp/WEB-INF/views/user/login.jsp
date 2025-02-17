@@ -11,22 +11,30 @@
     <script> const contextPath = "${contextPath}"; </script>
     <script src="${contextPath}/js/login.js" defer></script> <!--JS 경로-->
     <link rel="stylesheet" href="${contextPath}/css/login.css"> <!--CSS 경로-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/> <!--폰트어썸 경로-->
     <title>Login</title>
 </head>
 
 <body>
 <div class="loginContainer">
-    <div class="loginBox">
-        <form id="loginForm">
-            <div class="loginTitle">로그인</div>
-            <input type="text" id="uId" name="uId" placeholder="아이디를 입력하세요" autocomplete="current-id" required>
-            <input type="password" id="uPwd" name="uPwd" placeholder="비밀번호를 입력하세요" autocomplete="current-password" required>
-            <button class="loginBtn" type="submit">로그인</button>
+    <form id="loginForm">
+        <h1>Login</h1>
+        <div class="input-box">
+            <input type="text" id="uId" name="uId" placeholder="Username" autocomplete="current-id" required>
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="input-box">
+            <input type="password" id="uPwd" name="uPwd" placeholder="Password" autocomplete="current-password" required>
+            <i class="fa-duotone fa-solid fa-lock"></i>
+        </div>
 
-            <!-- 회원가입 페이지 이동 버튼 -->
-            <div class="loginSignupBtn" onclick="location.href='${contextPath}/user/signup'">회원가입이 필요하신가요?</div>
-        </form>
-    </div>
+        <button class="loginBtn" type="submit">Login</button>
+
+        <!-- 회원가입 페이지 이동 버튼 -->
+        <div class="loginSignupBtn" onclick="location.href='${contextPath}/user/signup'">Don't have an account?</div>
+    </form>
 </div>
 </body>
 </html>
