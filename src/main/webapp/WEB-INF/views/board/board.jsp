@@ -59,6 +59,47 @@
     </tbody>
 </table>
 
+<!-- 게시글 상세 보기 팝업 -->
+<div id="boardDetailPopup" class="popup">
+    <div class="popup-content">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+
+        <h2 id="popupTitle">게시글 상세 보기</h2>
+
+        <!-- 4개 항목을 가로로 배치 -->
+        <div class="popup-row">
+            <div class="popup-item">
+                <label>카테고리</label>
+                <div class="popup-info" id="popupCategory"></div>
+            </div>
+            <div class="popup-item">
+                <label>작성자</label>
+                <div class="popup-info" id="popupWriter"></div>
+            </div>
+            <div class="popup-item">
+                <label>작성일</label>
+                <div class="popup-info" id="popupDate"></div>
+            </div>
+            <div class="popup-item">
+                <label>조회수</label>
+                <div class="popup-info" id="popupViews"></div>
+            </div>
+        </div>
+
+        <!-- 내용 -->
+        <textarea id="popupContent" readonly></textarea>
+
+        <!-- 수정/삭제 버튼 (본인이 작성한 글일 경우만 보이도록 설정) -->
+        <div id="editDeleteBtns" class="edit-delete-btns" style="display: none;">
+            <button onclick="editPost()">수정</button>
+            <button onclick="deletePost()">삭제</button>
+        </div>
+
+    </div>
+</div>
+
+
+
 <!-- 페이지네이션 버튼 -->
 <div id="pagination"></div>
 

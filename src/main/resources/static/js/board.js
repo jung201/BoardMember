@@ -22,7 +22,9 @@ function loadBoardList(page, category='') {
                 row.innerHTML = `
                     <td>${board.bNo || '-'}</td>
                     <td>${board.bCategory || '-'}</td>
-                    <td>${board.bTitle || '-'}</td>
+                    <td class="board-title">
+                        <a href="#" onclick="openPopup(${board.bNo})">${board.bTitle || '-'}</a>
+                    </td>
                     <td>${board.bCreatedId || '-'}</td>
                     <td>${formatDate(board.bCreatedDate)}</td>
                     <td>${board.bViews || '0'}</td>
@@ -121,6 +123,61 @@ document.getElementById("searchKeyword").addEventListener("keypress", function(e
     }
 });
 
+
+// 게시글 상세보기 팝업 열기
+function openPopup(bNo) {
+    fetch(`/api/board/detail?bNo=${bNo}`)
+        .then(response => response.json())
+        .then(data => {
+            const board = data.board;
+            document.getElementById("popupTitle").innerText = board.bTitle;
+            document.getElementById("popupTitle").setAttribute("data-bno", board.bNo);
+            document.getElementById("popupCategory").innerText = board.bCategory;
+            document.getElementById("popupWriter").innerText = board.bCreatedId;
+            document.getElementById("popupDate").innerText = formatDate(board.bCreatedDate);
+            document.getElementById("popupViews").innerText = board.bViews;
+            document.getElementById("popupContent").value = board.bContent;
+
+            // 본인 작성 글 여부 확인 후 버튼 표시
+            if (data.isAuthor) {
+                document.getElementById("editDeleteBtns").style.display = "flex";
+            } else {
+                document.getElementById("editDeleteBtns").style.display = "none";
+            }
+
+            document.getElementById("boardDetailPopup").style.display = "flex";
+        })
+        .catch(error => console.error("게시글 상세보기 오류: ", error));
+}
+
+// 팝업 닫기
+function closePopup() {
+    document.getElementById("boardDetailPopup").style.display = "none";
+}
+
+// 게시글 삭제 기능
+function deletePost() {
+    const bNo = document.getElementById("popupTitle").getAttribute("data-bno");
+
+    if(!confirm("정말 삭제하시겠습니까 ? ")) {
+        return; // 사용자가 취소하면 삭제 중단
+    }
+
+    fetch(`/api/board/delete?bNo=${bNo}`, {
+        method: "DELETE",
+    })
+    .then(response => response.json())
+    .then(result => {
+        if(result.success) {
+            alert("게시글이 삭제되었습니다 !");
+            closePopup();
+            loadBoardList(1);
+        } else {
+            alert("삭제에 실패했습니다 !");
+        }
+    })
+    .catch(error => console.error("게시글 삭제 오류: ", error))
+}
 
 
 

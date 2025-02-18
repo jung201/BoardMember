@@ -6,7 +6,11 @@ import jung.gyu.board.service.BoardService;
 import jung.gyu.board.vo.BoardVO;
 import jung.gyu.user.util.UserSessionUtil;
 import jung.gyu.user.vo.LoginVO;
+import lombok.Getter;
+import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -20,6 +24,7 @@ public class BoardRestController {
     @Autowired
     BoardService boardService;
 
+    // 1. 게시글 리스트 조회
     @GetMapping("/list")
     public Map<String, Object> getAllBoard(
             @RequestParam(defaultValue = "1") int page,
@@ -42,7 +47,7 @@ public class BoardRestController {
         return response;
     }
 
-    // 검색 기능
+    // 2. 검색 기능
     @GetMapping("/search")
     public Map<String, Object> searchBoard(
             @RequestParam String searchType,
@@ -60,7 +65,7 @@ public class BoardRestController {
         return response;
     }
 
-    // 게시글 등록
+    // 3. 게시글 등록
     @PostMapping("/write")
     public Map<String, Object> writePost(@RequestBody BoardVO boardVO, HttpServletRequest request) {
         Map<String, Object> response = new HashMap<>();
@@ -71,7 +76,7 @@ public class BoardRestController {
 
         if (loggedInUser != null) {
             System.out.println("\n✅ 로그인된 사용자: " + loggedInUser);
-            System.out.println("\n✅ 게시글이 성공적으로 등록되었습니다\n" + boardVO +"\n");
+            System.out.println("\n✅ 게시글이 성공적으로 등록되었습니다\n" + boardVO + "\n");
 
         } else {
             response.put("success", false);
@@ -86,5 +91,66 @@ public class BoardRestController {
         response.put("success", success);
         return response;
     }
+
+    // 4. 보기 팝업
+    @GetMapping("/detail")
+    public ResponseEntity<Map<String, Object>> getBoardDetail(@RequestParam int bNo, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        LoginVO loggedInUser = UserSessionUtil.getLoggedInUser(session);
+        BoardVO board = boardService.getBoardById(bNo);
+
+        if (board == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        // 작성자 여부 확인
+        boolean isAuthor = loggedInUser != null && loggedInUser.getUNickname().equals(board.getBCreatedId());
+
+        Map<String, Object> response = new HashMap<>();
+        response.put("board", board);
+        response.put("isAuthor", isAuthor);
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 5. 게시글 삭제
+    @DeleteMapping("/delete")
+    public ResponseEntity<Map<String, Object>> deletePost(@RequestParam int bNo, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        LoginVO loggedInUser = UserSessionUtil.getLoggedInUser(session);
+
+        Map<String, Object> response = new HashMap<>();
+
+        if (loggedInUser == null) {
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
+
+        // 게시글 정보 가져오기
+        BoardVO board = boardService.getBoardById(bNo);
+
+        if (board == null) {
+            response.put("success", false);
+            response.put("message", "게시글이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        // 작성자 확인
+        if (!loggedInUser.getUNickname().equals(board.getBCreatedId())) {
+            response.put("success", false);
+            response.put("message", "삭제 권한이 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
+
+        // 게시글 삭제 실행
+        boolean success = boardService.deletePost(bNo);
+        response.put("success", success);
+        System.out.println("\n✅게시글이 삭제되었습니다 ! " + board + "\n");
+
+        return ResponseEntity.ok(response);
+    }
+
+
+
 
 }

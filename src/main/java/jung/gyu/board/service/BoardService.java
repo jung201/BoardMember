@@ -52,4 +52,15 @@ public class BoardService {
         int result = boardDAO.insertPost(boardVO);
         return result > 0;
     }
+
+    // 6. 보기 팝업
+    public BoardVO getBoardById(int bNo){
+        return boardDAO.selectBoardById(bNo);
+    }
+
+    // 7. 게시글 삭제
+    public boolean deletePost(int bNo) {
+        int result = boardDAO.deletePost(bNo);
+        return result > 0;
+    }
 }

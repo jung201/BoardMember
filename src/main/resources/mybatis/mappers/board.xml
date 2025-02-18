@@ -103,5 +103,15 @@
         )
     </insert>
 
+    <!-- 8. 보기팝업 -->
+    <select id="selectBoardById" parameterType="int" resultType="jung.gyu.board.vo.BoardVO">
+        <include refid="BaseSelectQuery"/>
+        WHERE bNo = #{bNo}
+    </select>
+
+    <!-- 9. 게시글 삭제 -->
+    <delete id="deletePost" parameterType="int">
+        DELETE FROM P_BOARD WHERE bNo = #{bNo}
+    </delete>
 
 </mapper>

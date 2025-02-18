@@ -24,6 +24,7 @@
                 <option value="F">자유이야기</option>
                 <option value="Q">QnA</option>
             </select>
+            <input type="hidden" id="bCreatedId" name="bCreatedId" value="${uNickname}">
         </div>
 
         <textarea id="bContent" name="bContent" rows="10" placeholder="내용을 입력해 주세요" required></textarea>

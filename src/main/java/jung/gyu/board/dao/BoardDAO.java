@@ -43,4 +43,14 @@ public interface BoardDAO {
 
     // 7. 게시글 등록
     int insertPost(BoardVO boardVO);
+
+    // 8. 특정 게시글 상세 조회 (보기 팝업)
+    BoardVO selectBoardById(
+            @Param("bNo") int bNo
+    );
+
+    // 9. 게시글 삭제
+    int deletePost(
+            @Param("bNo") int bNo
+    );
 }
