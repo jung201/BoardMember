@@ -4,31 +4,47 @@
 
 <!DOCTYPE html>
 <html lang="ko">
-
 <head>
     <meta charset="UTF-8"> <!--한글, 특수문자 깨짐방지-->
     <meta name="viewport" content="width=device-width, initial-scale=1.0"> <!--반응형 웹디자인 설정-->
-    <link rel="stylesheet" href="${contextPath}/css/signup.css"> <!--CSS 경로-->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!--제이쿼리-->
+    <script> const contextPath = "${contextPath}"; </script>
     <script src="${contextPath}/js/signup.js" defer></script> <!--JS 경로-->
-    <title>signup</title>
+    <link rel="stylesheet" href="${contextPath}/css/signup.css"> <!--CSS 경로-->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+          integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/> <!--폰트어썸 경로-->
+    <title>Login</title>
 </head>
 
 <body>
-
 <div class="signupContainer">
-    <div class="signupBox">
-        <form id="signupForm">
-            <div class="signupTitle">회원가입</div>
-            <input type="text" id="uId" name="uId" placeholder="아이디를 입력하세요" autocomplete="current-id" required><br>
-            <input type="password" id="uPwd" name="uPwd" placeholder="비밀번호를 입력하세요" autocomplete="current-password" required><br>
-            <input type="email" id="uEmail" name="uEmail" placeholder="이메일을 입력하세요"required><br>
-            <input type="text" id="uNickname" name="uNickname" placeholder="닉네임을 입력하세요"required><br>
-            <button class="signupBtn" type="button">회원가입</button>
+    <form id="signupForm">
+        <h1>Signup</h1>
+        <div class="input-box">
+            <input type="text" id="uId" name="uId" placeholder="UserName" autocomplete="current-id" required>
+            <i class="fa-solid fa-user"></i>
+        </div>
+        <div class="input-box">
+            <input type="password" id="uPwd" name="uPwd" placeholder="Password" autocomplete="current-password" required>
+            <i class="fa-duotone fa-solid fa-lock"></i>
+        </div>
+        <div class="input-box">
+            <input type="email" id="uEmail" name="uEmail" placeholder="Email"  required>
+            <i class="fa-regular fa-envelope"></i>
+        </div>
+        <div class="input-box">
+            <input type="text" id="uNickname" name="uNickname" placeholder="NickName" required>
+            <i class="fa-solid fa-user-pen"></i>
+        </div>
 
-            <!-- 로그인 페이지 이동 버튼 -->
-            <div class="signupLoginBtn" onclick="location.href='${contextPath}/user/login'">이미 아이디가 있으신가요?</div>
-        </form>
-    </div>
+        <button class="signupBtn" type="submit">Signup</button>
+
+        <!-- 회원가입 페이지 이동 버튼 -->
+        <div class="signupLoginBtn" onclick="location.href='${contextPath}/user/login'">Do you already have an account?</div>
+    </form>
 </div>
 </body>
 </html>
+
+

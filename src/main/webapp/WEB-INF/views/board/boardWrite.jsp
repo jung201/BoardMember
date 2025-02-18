@@ -14,28 +14,25 @@
     <title>글쓰기</title>
 </head>
 <body>
+<div class="writeContainer">
+    <form id="writeForm">
+        <h2>게시글 작성</h2>
+        <div class="cateId">
+            <input type="text" id="bTitle" name="bTitle" placeholder="제목을 입력해 주세요" required>
+            <select id="bCategory" name="bCategory">
+                <option value="N">공지사항</option>
+                <option value="F">자유이야기</option>
+                <option value="Q">QnA</option>
+            </select>
+        </div>
 
-<h2>게시글 작성</h2>
+        <textarea id="bContent" name="bContent" rows="10" placeholder="내용을 입력해 주세요" required></textarea>
 
-<form id="writeForm">
-    <label>카테고리:
-        <select id="bCategory" name="bCategory">
-            <option value="N">공지사항</option>
-            <option value="F">자유이야기</option>
-            <option value="Q">QnA</option>
-        </select>
-    </label>
-
-    <label>제목: <input type="text" id="bTitle" name="bTitle" required></label>
-
-    <label>내용:
-        <textarea id="bContent" name="bContent" rows="5" required></textarea>
-    </label>
-
-    <label>작성자: <input type="text" id="bCreatedId" name="bCreatedId" value="${uNickname}" readonly></label>
-
-    <button type="button" onclick="submitPost()">등록</button>
-</form>
-
+        <div class="writeBtn">
+            <button type="button" onclick="submitPost()">등록</button>
+            <button type="button" onclick="location.href='${contextPath}/board'">취소</button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

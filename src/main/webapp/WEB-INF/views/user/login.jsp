@@ -22,7 +22,7 @@
     <form id="loginForm">
         <h1>Login</h1>
         <div class="input-box">
-            <input type="text" id="uId" name="uId" placeholder="Username" autocomplete="current-id" required>
+            <input type="text" id="uId" name="uId" placeholder="UserName" autocomplete="current-id" required>
             <i class="fa-solid fa-user"></i>
         </div>
         <div class="input-box">

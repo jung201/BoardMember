@@ -41,4 +41,6 @@ public class BoardController {
 
         return "board/boardWrite";  // boardWrite.jsp로 이동
     }
+
+
 }

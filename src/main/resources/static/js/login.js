@@ -27,7 +27,7 @@ document.getElementById("loginForm").addEventListener("submit", function(event){
         if (data.uNickname) {
             alert(`${data.uNickname}님 환영합니다!`);
         }
-        window.location.href = "/main";
+        window.location.href = "/board";
     })
     .catch(error => {
         alert(error.message);
