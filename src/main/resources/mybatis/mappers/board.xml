@@ -114,4 +114,21 @@
         DELETE FROM P_BOARD WHERE bNo = #{bNo}
     </delete>
 
+    <!-- 10. 게시글 수정 -->
+    <update id="updatePost" parameterType="jung.gyu.board.vo.BoardVO">
+        UPDATE P_BOARD
+            SET bTitle = #{bTitle},
+            bContent = #{bContent},
+            bCategory = #{bCategory},
+            bUpdateDate = NOW()
+        WHERE bNo = #{bNo}
+    </update>
+
+    <!-- 11. 게시글 조회수 증가 -->
+    <update id="updateViewCount">
+        UPDATE P_BOARD
+        SET bViews = bViews + 1
+        WHERE bNo = #{bNo}
+    </update>
+
 </mapper>

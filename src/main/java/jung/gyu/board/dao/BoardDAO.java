@@ -53,4 +53,12 @@ public interface BoardDAO {
     int deletePost(
             @Param("bNo") int bNo
     );
+
+    // 10. 게시글 수정
+    int updatePost(BoardVO boardVO);
+
+    // 11. 게시물 조회수 증가
+    int updateViewCount(
+            @Param("bNo") int bNo
+    );
 }

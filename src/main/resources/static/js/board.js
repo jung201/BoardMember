@@ -106,7 +106,9 @@ function updateBoardList(boardList) {
         let row = `<tr>
             <td>${board.bNo || '-'}</td>
             <td>${board.bCategory || '-'}</td>
-            <td>${board.bTitle  || '-'}</td>
+            <td class="board-title">
+                <a href="#" onclick="openPopup(${board.bNo})">${board.bTitle || '-'}</a>
+            </td>
             <td>${board.bCreatedId  || '-'}</td>
             <td>${formatDate(board.bCreatedDate)}</td>
             <td>${board.bViews || '0'}</td>
@@ -126,28 +128,34 @@ document.getElementById("searchKeyword").addEventListener("keypress", function(e
 
 // 게시글 상세보기 팝업 열기
 function openPopup(bNo) {
-    fetch(`/api/board/detail?bNo=${bNo}`)
-        .then(response => response.json())
-        .then(data => {
-            const board = data.board;
-            document.getElementById("popupTitle").innerText = board.bTitle;
-            document.getElementById("popupTitle").setAttribute("data-bno", board.bNo);
-            document.getElementById("popupCategory").innerText = board.bCategory;
-            document.getElementById("popupWriter").innerText = board.bCreatedId;
-            document.getElementById("popupDate").innerText = formatDate(board.bCreatedDate);
-            document.getElementById("popupViews").innerText = board.bViews;
-            document.getElementById("popupContent").value = board.bContent;
 
-            // 본인 작성 글 여부 확인 후 버튼 표시
-            if (data.isAuthor) {
-                document.getElementById("editDeleteBtns").style.display = "flex";
-            } else {
-                document.getElementById("editDeleteBtns").style.display = "none";
-            }
+     // 조회수 증가 요청
+    fetch(`/api/board/increaseView?bNo=${bNo}`, {
+        method: "PUT"
+    })
+    .then(() => {
+        return fetch(`/api/board/detail?bNo=${bNo}`);
+    })
+    .then(response => response.json())
+    .then(data => {
+        const board = data.board;
+        document.getElementById("popupTitle").innerText = board.bTitle;
+        document.getElementById("popupTitle").setAttribute("data-bno", board.bNo);
+        document.getElementById("popupCategory").innerText = board.bCategory;
+        document.getElementById("popupWriter").innerText = board.bCreatedId;
+        document.getElementById("popupDate").innerText = formatDate(board.bCreatedDate);
+        document.getElementById("popupViews").innerText = board.bViews;
+        document.getElementById("popupContent").value = board.bContent;
 
-            document.getElementById("boardDetailPopup").style.display = "flex";
-        })
-        .catch(error => console.error("게시글 상세보기 오류: ", error));
+        // 본인 작성 글 여부 확인 후 버튼 표시
+        if (data.isAuthor) {
+            document.getElementById("editDeleteBtns").style.display = "flex";
+        } else {
+            document.getElementById("editDeleteBtns").style.display = "none";
+        }
+         document.getElementById("boardDetailPopup").style.display = "flex";
+    })
+    .catch(error => console.error("게시글 상세보기 오류: ", error));
 }
 
 // 팝업 닫기
@@ -180,7 +188,89 @@ function deletePost() {
 }
 
 
+// 게시글 수정
+function editPost() {
+    enableEditMode();
+}
 
+let isEditing = false; // 수정 모드 상태
+
+// 수정 모드 활성화 함수
+function enableEditMode() {
+    if (isEditing) {
+        return;
+    }
+
+    isEditing = true;
+    document.getElementById("popupContent").removeAttribute("readonly");
+    document.getElementById("popupContent").style.border = "1px solid #ccc";
+    document.getElementById("popupTitle").contentEditable = "true";
+    document.getElementById("popupTitle").style.borderBottom = "1px solid #ccc";
+
+    // 카테고리 선택 가능하도록 변경
+    document.getElementById("popupCategory").style.display = "none";  // 기존 텍스트 숨김
+    document.getElementById("popupCategorySelect").style.display = "block"; // select 보이기
+
+    // 버튼 변경
+    document.getElementById("editBtn").style.display = "none"; // "수정" 버튼 숨기기
+    document.getElementById("deleteBtn").style.display = "none"; // "삭제" 버튼 숨기기
+    document.getElementById("saveBtn").style.display = "inline-block"; // "수정 완료" 버튼 표시
+}
+
+// 수정 완료 후 서버로 데이터 전송
+function saveEdit() {
+    const bNo = document.getElementById("popupTitle").getAttribute("data-bno");
+    const updatedTitle = document.getElementById("popupTitle").innerText.trim();
+    const updatedContent = document.getElementById("popupContent").value.trim();
+    const updatedCategory = document.getElementById("popupCategorySelect").value;
+
+    if (!updatedTitle || !updatedContent) {
+        alert("🚨 제목과 내용을 입력해주세요!");
+        return;
+    }
+
+    fetch(`/api/board/update`, {
+        method: "PUT",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            bNo: bNo,
+            bTitle: updatedTitle,
+            bCategory: updatedCategory,
+            bContent: updatedContent
+        })
+    })
+    .then(response => response.json())
+    .then(result => {
+        if (result.success) {
+            alert("게시글이 수정되었습니다!");
+
+            // 수정 모드 초기화
+            isEditing = false;
+            document.getElementById("popupContent").setAttribute("readonly", true); // 다시 읽기 전용
+            document.getElementById("popupContent").style.border = "none";
+            document.getElementById("popupTitle").contentEditable = "false";
+            document.getElementById("popupTitle").style.borderBottom = "none";
+            
+            // 카테고리 다시 텍스트 모드로 변경
+            document.getElementById("popupCategory").innerText = document.getElementById("popupCategorySelect").selectedOptions[0].text;
+            document.getElementById("popupCategory").style.display = "block";
+            document.getElementById("popupCategorySelect").style.display = "none";
+
+            // 버튼 원래대로 복구
+            document.getElementById("editBtn").style.display = "inline-block";
+            document.getElementById("deleteBtn").style.display = "inline-block";
+            document.getElementById("saveBtn").style.display = "none";
+
+            closePopup();
+            loadBoardList(1); // 게시판 목록 새로고침
+        } else {
+            alert("수정에 실패했습니다.");
+        }
+    })
+    .catch(error => console.error("게시글 수정 오류: ", error));
+}
 
 
 

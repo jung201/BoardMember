@@ -6,8 +6,6 @@ import jung.gyu.board.service.BoardService;
 import jung.gyu.board.vo.BoardVO;
 import jung.gyu.user.util.UserSessionUtil;
 import jung.gyu.user.vo.LoginVO;
-import lombok.Getter;
-import org.apache.coyote.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -150,7 +148,45 @@ public class BoardRestController {
         return ResponseEntity.ok(response);
     }
 
+    // 6. 게시글 수정
+    @PutMapping("/update")
+    public ResponseEntity<Map<String, Object>> updatePost(@RequestBody BoardVO boardVO, HttpServletRequest request) {
+        HttpSession session = request.getSession();
+        LoginVO loggedInUser = UserSessionUtil.getLoggedInUser(session);
+        Map<String, Object> response = new HashMap<>();
 
+        if (loggedInUser == null) {
+            response.put("success", false);
+            response.put("message", "로그인이 필요합니다.");
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
+        }
 
+        BoardVO existingBoard = boardService.getBoardById(boardVO.getBNo());
+        if (existingBoard == null) {
+            response.put("success", false);
+            response.put("message", "게시글이 존재하지 않습니다.");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+        }
+
+        if (!loggedInUser.getUNickname().equals(existingBoard.getBCreatedId())) {
+            response.put("success", false);
+            response.put("message", "수정 권한이 없습니다.");
+            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(response);
+        }
+
+        // 게시글 수정 실행
+        boolean success = boardService.updatePost(boardVO);
+        response.put("success", success);
+        System.out.println("\n✅게시글이 수정되었습니다 ! " + boardVO + "\n");
+
+        return ResponseEntity.ok(response);
+    }
+
+    // 7. 게시물 조회수 증가
+    @PutMapping("/increaseView")
+    public ResponseEntity<?> increaseViewCount(@RequestParam int bNo) {
+        boardService.increaseView(bNo);
+        return ResponseEntity.ok().body(Map.of("message", "조회수 증가 완료!"));
+    }
 
 }

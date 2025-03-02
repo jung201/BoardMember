@@ -54,7 +54,7 @@ public class BoardService {
     }
 
     // 6. 보기 팝업
-    public BoardVO getBoardById(int bNo){
+    public BoardVO getBoardById(int bNo) {
         return boardDAO.selectBoardById(bNo);
     }
 
@@ -62,5 +62,16 @@ public class BoardService {
     public boolean deletePost(int bNo) {
         int result = boardDAO.deletePost(bNo);
         return result > 0;
+    }
+
+    // 8. 게시글 수정
+    public boolean updatePost(BoardVO boardVO) {
+        int result = boardDAO.updatePost(boardVO);
+        return result > 0;
+    }
+
+    // 9. 게시물 조회수 증가
+    public void increaseView(int bNo){
+        boardDAO.updateViewCount(bNo);
     }
 }

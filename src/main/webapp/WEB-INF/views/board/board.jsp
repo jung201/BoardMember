@@ -70,7 +70,15 @@
         <div class="popup-row">
             <div class="popup-item">
                 <label>카테고리</label>
+                <!-- 카테고리 (보기 모드) -->
                 <div class="popup-info" id="popupCategory"></div>
+
+                <!-- 카테고리 (수정 모드, 기본 숨김) -->
+                <select id="popupCategorySelect" style="display: none;">
+                    <option value="N">공지사항</option>
+                    <option value="F">자유이야기</option>
+                    <option value="Q">QnA</option>
+                </select>
             </div>
             <div class="popup-item">
                 <label>작성자</label>
@@ -91,8 +99,9 @@
 
         <!-- 수정/삭제 버튼 (본인이 작성한 글일 경우만 보이도록 설정) -->
         <div id="editDeleteBtns" class="edit-delete-btns" style="display: none;">
-            <button onclick="editPost()">수정</button>
-            <button onclick="deletePost()">삭제</button>
+            <button id="editBtn" onclick="editPost()">수정</button>
+            <button id="deleteBtn" onclick="deletePost()">삭제</button>
+            <button id="saveBtn" onclick="saveEdit()" style="display: none;">수정 완료</button>
         </div>
 
     </div>
